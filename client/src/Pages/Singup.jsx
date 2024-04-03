@@ -1,8 +1,35 @@
-import { Button, Label, TextInput } from 'flowbite-react'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { Alert, Button, Label, TextInput } from 'flowbite-react'
+import React,{useState} from 'react'
+import { Form, Link ,Navigate,useNavigate} from 'react-router-dom'
 
 export default function Singup() {
+  const navigate=useNavigate()
+  const [Formdata,setFormdata]=useState({})
+  const [errorMessage,setErrorMessage]=useState(null)
+
+  const handleOnSubmit=async(e)=>{
+    e.preventDefault()
+    console.log(Formdata)
+    try {
+      const response=await fetch('http://localhost:3000/api/auth/signup',{
+        method:'POST',
+        headers:{'content-Type':'application/json'},
+        body:JSON.stringify(Formdata)
+      })
+      const data=await response.json()
+      setErrorMessage(data.Message)
+      if(response.ok){
+        navigate('/signin')
+      }
+    } catch (error) {
+      // console.log(error)
+      setErrorMessage(error.message)
+    }
+  }
+  const handleOnChange=(e)=>{
+    console.log(e.target.value)
+    setFormdata({...Formdata,[e.target.id]:e.target.value.trim()})
+  }
   return (
     <div className='min-h-screen mt-20'>
       <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5'>
@@ -18,27 +45,27 @@ export default function Singup() {
         </div>
         {/* Right */}
         <div className="flex-1">
-          <form className='flex flex-col gap-4'>
+          <form className='flex flex-col gap-4' onSubmit={handleOnSubmit}>
             <div>
-              <Label value='Your username'/>
+              <Label value='Your username' />
               <TextInput
-              type='text'
-              placeholder='Username'
-              id='username'/>
+                type='text'
+                placeholder='Username'
+                id='name' onChange={handleOnChange}/>
             </div>
             <div>
-              <Label value='Your email'/>
+              <Label value='Your email' />
               <TextInput
-              type='text'
-              placeholder='Email'
-              id='email'/>
+                type='email'
+                placeholder='Email'
+                id='email' onChange={handleOnChange}/>
             </div>
             <div>
-              <Label value='Your password'/>
+              <Label value='Your password' />
               <TextInput
-              type='password'
-              placeholder='Password'
-              id='password'/>
+                type='password'
+                placeholder='Password'
+                id='password' onChange={handleOnChange} />
             </div>
             <Button gradientDuoTone='purpleToPink' type='submit'>
               Sign Up
@@ -52,6 +79,11 @@ export default function Singup() {
               Sign in
             </Link>
           </div>
+          {errorMessage&&(
+            <Alert className='mt-5' color='failure'>
+              {errorMessage}
+            </Alert>
+          )}
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ router.post('/signup',async(req,res,next)=>{
    const {name,email,password}=req.body;
    if(!name||!email||!password||name===''||password===''||email===''){
      next(errorHandler(400,'All feilds are required'))
-      // return res.status(400).json({Message:"All details required"})
+      return
    }
    const hashpassword=bcryptjs.hashSync(password,10)
    const newUser=new UserSchema({
