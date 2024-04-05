@@ -19,7 +19,7 @@ export default function Singup() {
       const data=await response.json()
       setErrorMessage(data.message)
       if(response.ok){
-        navigate('/signin')
+        navigate('/')
       }
     } catch (error) {
       // console.log(error)

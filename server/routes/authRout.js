@@ -45,6 +45,7 @@ router.post('/signin',async(req,res,next)=>{
          next(errorHandler(404,'Password or username is incorrect'))
          return
       }
+      const {password:pass,...rest}=validateuser._doc;
       // console.log(validatepassword)
       // console.log(validateuser._id)
 
@@ -55,7 +56,7 @@ router.post('/signin',async(req,res,next)=>{
       // console.log(token)
       res.status(200).cookie('access_token',token,{
          httpOnly:true,
-      }).json('Signin successfull')
+      }).json(rest)
    }catch(Error){
       console.log(Error)
       // res.json(Error)
