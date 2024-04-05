@@ -1,7 +1,7 @@
-const errorHandler=(statusCode,Message)=>{
+const errorHandler=(statusCode,message)=>{
     const error=new Error()
     error.statusCode=statusCode;
-    error.Message=Message
+    error.message=message
     return error
 }
 

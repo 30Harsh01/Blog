@@ -17,7 +17,7 @@ export default function Singup() {
         body:JSON.stringify(Formdata)
       })
       const data=await response.json()
-      setErrorMessage(data.Message)
+      setErrorMessage(data.message)
       if(response.ok){
         navigate('/signin')
       }
